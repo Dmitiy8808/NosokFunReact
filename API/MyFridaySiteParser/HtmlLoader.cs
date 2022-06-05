@@ -28,7 +28,20 @@ namespace API.MyFridaySiteParser
             }
 
             return source;
+        }
 
+         public async Task<string> GetSourceByPagePrefix()
+        {
+            var response = await _httpclient.GetAsync(_url);
+            string source = null;
+            var parser = new HtmlParser();
+
+            if(response != null && response.StatusCode == HttpStatusCode.OK)
+            {
+                source = await response.Content.ReadAsStringAsync();
+            }
+
+            return source;
         }
     }
 }

@@ -8,7 +8,7 @@ using API.Interfaces;
 
 namespace API.MyFridaySiteParser
 {
-    public class MyFridayParser : IParser<String>
+    public class MyFridayHrefParser : IParser<String>
     {
         public HashSet<String> Parse(string htmDocument)
         {

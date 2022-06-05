@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Entitities;
 using API.Interfaces;
 using API.MyFridaySiteParser;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,13 @@ namespace API.Controllers
         public async Task<string[]> GetHtmlLoader()
         {  
             return await _parsingSeervice.GetSocsHrefs();
+        }
+
+        [HttpGet]
+        [Route("product")]
+        public async Task<Product> Getproduct()
+        {  
+            return await _parsingSeervice.GetParseProduct();
         }
     }
 }
