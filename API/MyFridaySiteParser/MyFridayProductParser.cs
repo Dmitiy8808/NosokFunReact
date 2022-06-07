@@ -27,7 +27,7 @@ namespace API.MyFridaySiteParser
             var price = document.QuerySelectorAll("div").Where(div => div.ClassName != null 
                                                     && div.ClassName.Contains("catalog-element-price-discount")).FirstOrDefault().TextContent.Trim().Split("р")[0].Trim().Replace(".", ",");
             var pictureUrl = document.QuerySelectorAll("a").Where(a => a.ClassName != null 
-                                                    && a.ClassName.Contains("catalog-element-gallery-picture intec-image")).FirstOrDefault().TextContent;
+                                                    && a.ClassName.Contains("catalog-element-gallery-picture intec-image")).FirstOrDefault().GetAttribute("href");
             var properties = document.QuerySelectorAll("div").Where(div => div.ClassName != null 
                                                    && div.ClassName == "catalog-element-property");
             foreach (var property in properties)
@@ -44,19 +44,8 @@ namespace API.MyFridaySiteParser
                 {
                      productstructure = property.LastElementChild.TextContent.Trim();
                 }
-                Console.WriteLine(property.FirstElementChild.TextContent);
-                Console.WriteLine(property.LastElementChild.TextContent);
             }
-        
-            var trimPrice = price.Trim();
-            var splitPrice1 = trimPrice.Split("р")[0].Trim();
-            var splitPrice2 = splitPrice1.Replace(".", ",");
-            var decimalPrice = decimal.Parse(splitPrice2);
-           
-        // public decimal Price { get; set; }
-        // public string PictureUrl { get; set; }
-        // public string Type { get; set; }
-        // public int QuantityInStock { get; set; }
+
             var product = new Product {
                 Name = name.Trim(),
                 Article = article.Trim(),
@@ -66,8 +55,9 @@ namespace API.MyFridaySiteParser
                 InStock = true,
                 Price = decimal.Parse(price),
                 ProductStructure = productstructure,
-
-
+                PictureUrl = pictureUrl,
+                Type = "All",
+                QuantityInStock = 10,
             };
 
             return product;
