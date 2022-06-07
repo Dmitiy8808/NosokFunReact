@@ -26,12 +26,15 @@ namespace API.MyFridaySiteParser
             var structure = document.QuerySelectorAll("div").Where(div => div.ClassName != null 
                                                     && div.ClassName.Contains("catalog-element-property-value")).ToArray()[1].TextContent;
             var price = document.QuerySelectorAll("div").Where(div => div.ClassName != null 
-                                                    && div.ClassName.Contains("catalog-element-price-discount")).FirstOrDefault().TextContent;
+                                                    && div.ClassName.Contains("catalog-element-price-discount")).FirstOrDefault().TextContent.Trim().Split("р")[0].Trim().Replace(".", ",");
             var pictureUrl = document.QuerySelectorAll("a").Where(a => a.ClassName != null 
                                                     && a.ClassName.Contains("catalog-element-gallery-picture intec-image")).FirstOrDefault().TextContent;
         
             var trimPrice = price.Trim();
-            var spitPrice = trimPrice.Split("р")[0].Split(" ")[0] + trimPrice.Split("р")[0].Split(" ")[1];
+            var splitPrice1 = trimPrice.Split("р")[0].Trim();
+            var splitPrice2 = splitPrice1.Replace(".", ",");
+            var decimalPrice = decimal.Parse(splitPrice2);
+           
         // public decimal Price { get; set; }
         // public string PictureUrl { get; set; }
         // public string Type { get; set; }
@@ -43,7 +46,7 @@ namespace API.MyFridaySiteParser
                 Design = design.Trim(),
                 Structure = structure.Trim(),
                 InStock = true,
-                Price = decimal.Parse(price.Trim().Split("р")[0]),
+                Price = decimal.Parse(price),
 
 
 

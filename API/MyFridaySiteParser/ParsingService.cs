@@ -32,7 +32,7 @@ namespace API.MyFridaySiteParser
         public async Task<Product> GetParseProduct()
         {
             var myFridayProductSettings = new MyFridayProductSettings();
-            myFridayProductSettings.Prefix = "allsocks/nabor_zabornaya_lirika/";
+            myFridayProductSettings.Prefix = "allsocks/noski_korotkie_kogda_cherkizon_zakryli/"; //"allsocks/nabor_zabornaya_lirika/";
             var htmlLoader = new HtmlLoader(myFridayProductSettings);
             var myFridayProductParser = new MyFridayProductParser();
             var htmlPage = await htmlLoader.GetSourceByPagePrefix();
