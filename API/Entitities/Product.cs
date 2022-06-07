@@ -12,8 +12,9 @@ namespace API.Entitities
         public string Article { get; set; }
         public string Size { get; set; }
         public string Description { get; set; }
-        public string Design { get; set; }
-        public string Structure { get; set; }
+        public string Pattern { get; set; }
+        public string Text { get; set; }
+        public string ProductStructure { get; set; }
         public bool InStock { get; set; }
         public decimal Price { get; set; }
         public string PictureUrl { get; set; }
