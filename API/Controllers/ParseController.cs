@@ -23,12 +23,12 @@ namespace API.Controllers
         [HttpGet]
         public async Task<string[]> GetHtmlLoader()
         {  
-            return await _parsingSeervice.GetSocsHrefs();
+            return await _parsingSeervice.GetSocksHrefs();
         }
 
         [HttpGet]
         [Route("product")]
-        public async Task<Product> Getproduct()
+        public async Task<List<Product>> Getproduct()
         {  
             return await _parsingSeervice.GetParseProduct();
         }

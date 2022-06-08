@@ -11,19 +11,34 @@ namespace API.MyFridaySiteParser
 {
     public class MyFridayProductParser : IProductParser<Product>
     {
-        private string pattern;
-        private string text;
-        private string productstructure;
+        private string pattern = "";
+        private string text = "";
+        private string productstructure = "";
+        private string description = "";
         public Product Parse(string htmDocument)
         {   
             var parser = new HtmlParser();
             var document =  parser.ParseDocument(htmDocument);
+           
             var name = document.QuerySelectorAll("h1").Where(h1 => h1.ClassName != null 
                                                     && h1.ClassName.Contains("intec-header")).FirstOrDefault().TextContent;
             var article = document.QuerySelectorAll("span").Where(span => span.ClassName != null 
                                                     && span.ClassName.Contains("catalog-element-article-value")).FirstOrDefault().TextContent;
             var size =  document.QuerySelectorAll("div").Where(div => div.ClassName != null 
                                                     && div.ClassName.Contains("catalog-element-offers-property-value-content")).FirstOrDefault().TextContent; //TODO Парсить нужно в массив размеров подумать
+            
+            
+            try
+            {
+                description = document.QuerySelectorAll("div").Where(div => div.ClassName != null 
+                                                    && div.ClassName.Contains("catalog-element-section-description intec-ui-markup-text")).FirstOrDefault().TextContent.Trim().Replace("\n", " ") ;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка {ex.Message} в продукте {name}");
+                description = "";
+
+            }
             var price = document.QuerySelectorAll("div").Where(div => div.ClassName != null 
                                                     && div.ClassName.Contains("catalog-element-price-discount")).FirstOrDefault().TextContent.Trim().Split("р")[0].Trim().Replace(".", ",");
             var pictureUrl = document.QuerySelectorAll("a").Where(a => a.ClassName != null 
@@ -50,6 +65,7 @@ namespace API.MyFridaySiteParser
                 Name = name.Trim(),
                 Article = article.Trim(),
                 Size = size.Trim(),
+                Description = description,
                 Pattern = pattern,
                 Text = text,
                 InStock = true,

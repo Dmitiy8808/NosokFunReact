@@ -8,7 +8,7 @@ namespace API.Interfaces
 {
     public interface IParsingService
     {
-        Task<string[]> GetSocsHrefs();
-        Task<Product> GetParseProduct();
+        Task<string[]> GetSocksHrefs();
+        Task<List<Product>> GetParseProduct();
     }
 }
