@@ -1,22 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AngleSharp.Html.Dom;
+using System.Net;
 using AngleSharp.Html.Parser;
 using API.Entitities;
 using API.Interfaces;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace API.MyFridaySiteParser
 {
     public class MyFridayProductParser : IProductParser<Product>
     {
-        private string pattern = "";
+        private string pattern = ""; // неуверен насколько это правильно
         private string text = "";
         private string productstructure = "";
         private string description = "";
         public Product Parse(string htmDocument)
         {   
+            pattern = ""; // неуверен насколько это правильно
+            text = "";
+            productstructure = "";
+            description = "";
             var parser = new HtmlParser();
             var document =  parser.ParseDocument(htmDocument);
            
@@ -76,7 +77,25 @@ namespace API.MyFridaySiteParser
                 QuantityInStock = 10,
             };
 
+            DownloadImage(pictureUrl);
+
             return product;
+        }
+
+        public static async Task DownloadImage(string pictureUrl)
+        {
+            HttpClient client = new HttpClient();
+            // var address = Path.Combine("https://myfriday.ru", pictureUrl);
+            Uri uri = new Uri("http://myfriday.ru" + pictureUrl);
+            var response = await client.GetAsync(uri);
+            using (var fs = new FileStream(
+                "1.jpg", 
+                FileMode.Create))
+            {
+                await response.Content.CopyToAsync(fs);
+            }
+
+            
         }
     }
 }

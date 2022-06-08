@@ -10,5 +10,6 @@ namespace API.Interfaces
     {
         Task<string[]> GetSocksHrefs();
         Task<List<Product>> GetParseProduct();
+        
     }
 }
