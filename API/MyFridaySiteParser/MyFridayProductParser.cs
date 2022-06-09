@@ -85,11 +85,19 @@ namespace API.MyFridaySiteParser
         public static async Task DownloadImage(string pictureUrl)
         {
             HttpClient client = new HttpClient();
-            // var address = Path.Combine("https://myfriday.ru", pictureUrl);
+            var fileName = pictureUrl.Split('/').Last(); 
+            var dirPathSplit = pictureUrl.Split('/');
+            var dirAppPath = $@"wwwroot\{dirPathSplit[1]}\{dirPathSplit[2]}\{dirPathSplit[3]}";
+            var dirServerPath = Path.Combine(Directory.GetCurrentDirectory(), dirAppPath);
+            if (!Directory.Exists(dirServerPath))
+            {
+                Directory.CreateDirectory(dirServerPath);
+            }
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), dirAppPath, fileName);
             Uri uri = new Uri("http://myfriday.ru" + pictureUrl);
             var response = await client.GetAsync(uri);
             using (var fs = new FileStream(
-                "1.jpg", 
+                filePath, 
                 FileMode.Create))
             {
                 await response.Content.CopyToAsync(fs);
