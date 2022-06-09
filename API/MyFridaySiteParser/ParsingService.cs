@@ -10,6 +10,12 @@ namespace API.MyFridaySiteParser
 {
     public class ParsingService : IParsingService
     {
+        private readonly IProductRepo _productRepo;
+
+        public ParsingService(IProductRepo productRepo)
+        {
+            _productRepo = productRepo;
+        }
         public async Task<string[]> GetSocksHrefs()
         {
            
@@ -44,6 +50,7 @@ namespace API.MyFridaySiteParser
                 var product = myFridayProductParser.Parse(htmlPage);
                 productList.Add(product);
             }
+            _productRepo.AddRange(productList);
             return productList;
         }
 
