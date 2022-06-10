@@ -10,9 +10,9 @@ namespace API.MyFridaySiteParser
 {
     public class ParsingService : IParsingService
     {
-        private readonly IProductRepo _productRepo;
+        private readonly IProductsRepo _productRepo;
 
-        public ParsingService(IProductRepo productRepo)
+        public ParsingService(IProductsRepo productRepo)
         {
             _productRepo = productRepo;
         }

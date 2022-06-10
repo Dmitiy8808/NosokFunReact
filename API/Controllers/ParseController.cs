@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Entitities;
 using API.Interfaces;
-using API.MyFridaySiteParser;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

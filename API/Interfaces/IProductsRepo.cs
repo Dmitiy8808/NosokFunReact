@@ -6,8 +6,10 @@ using API.Entitities;
 
 namespace API.Interfaces
 {
-    public interface IProductRepo
+    public interface IProductsRepo
     {
         public void AddRange(IEnumerable<Product> item);
+        public IQueryable<Product> GetProducts();
+        public Task<Product> GetProduct(int id);
     }
 }
