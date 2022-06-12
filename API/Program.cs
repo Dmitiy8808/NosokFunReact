@@ -12,6 +12,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 builder.Services.AddScoped<IParsingService, ParsingService>();
 builder.Services.AddScoped<IProductsRepo, ProductsRepo>();
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -27,6 +28,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(opt => 
+{
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+});
 
 app.UseAuthorization();
 
