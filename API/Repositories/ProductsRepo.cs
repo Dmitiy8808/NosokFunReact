@@ -19,10 +19,10 @@ namespace API.Repositories
             _context = context;
             
         }
-        public void AddRange(IEnumerable<Product> item)
+        public void AddRange(IEnumerable<Product> item) //TODO Сделать метод асинхронным. 
         {
             _context.Products.AddRange(item);
-            _context.SaveChanges();
+            _context.SaveChanges();         
         }
 
         public IQueryable<Product> GetProducts()

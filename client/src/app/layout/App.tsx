@@ -1,12 +1,18 @@
 import { CssBaseline, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import Catalog from "../../features/catalog/Catalog";
+import ProductDetails from "../../features/catalog/ProductDetails";
+import HomePage from "../../features/home/HomePage";
 import { Product } from "../models/product";
 import Header from "./Header";
+import Sets from "../../features/sets/Sets";
+import Short from "../../features/short/Short";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
+  
 
   useEffect(() => {
     fetch('https://localhost:7292/Products')
@@ -14,30 +20,22 @@ function App() {
       .then(data => setProducts(data))
   }, [])
 
-  function addProduct() {
-    setProducts(prevState => [...prevState, 
-      {
-      id: prevState.length + 101,
-      name: 'product' + (prevState.length + 1), 
-      price: prevState.length * 100 + 100,
-      article: 'test',
-      size: '123',
-      description: 'description',
-      pattern: 'pattern',
-      text: 'text',
-      productStructure: 'structure',
-      inStock: true,
-      pictureUrl: 'picture',
-      type: 'all',
-      quantityInStock: 10
-    }])
-  }
+  
   return (
     <>
       <CssBaseline />
       <Header />
       <Container>
-        <Catalog products={products} addProduct={addProduct}/>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='catalog' element={<Catalog products={products}   />} />
+          <Route path='catalog/:id' element={<ProductDetails />}/>
+          <Route path='short' element={<Short />} />
+          <Route path='short/:id' element={<ProductDetails />} />
+          <Route path='sets' element={<Sets />} />
+          <Route path='sets/:id' element={<ProductDetails />} />
+          {/* <Route path='*' element={<NotfoundPage />}/>  Добавить роутинг для нот файунд  */}
+        </Routes>
       </Container>
       
     </>
