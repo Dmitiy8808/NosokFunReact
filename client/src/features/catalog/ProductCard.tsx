@@ -1,4 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Product } from "../../app/models/product";
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 
 export default function ProductCard({product}: Props) {
     return (
-    <Card >
+    <Card component={Link} to={`/catalog/${product.id}`}>
       <CardMedia
         component="img"
         // height="350"
