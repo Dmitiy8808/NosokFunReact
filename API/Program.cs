@@ -1,5 +1,6 @@
 using API.Data;
 using API.Interfaces;
+using API.Middleware;
 using API.MyFridaySiteParser;
 using API.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

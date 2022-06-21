@@ -9,11 +9,14 @@ interface Props {
 
 export default function ProductCard({product}: Props) {
     return (
-    <Card component={Link} to={`/catalog/${product.id}`}>
+    <Card component={Link} to={`/catalog/${product.id}`} sx={{'&:hover': {
+      backgroundColor: 'primary.main',
+      opacity: [0.9, 0.8, 0.7],
+    }}}>
       <CardMedia
         component="img"
         // height="350"
-        sx={{height: 350, backgroungSize: 'contain'}}
+        sx={{height: 350, backgroungSize: 'contain', }}
         image={product.pictureUrl}
         alt={product.name}
       />

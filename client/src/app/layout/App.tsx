@@ -15,7 +15,7 @@ function App() {
   
 
   useEffect(() => {
-    fetch('https://localhost:7292/Products')
+    fetch('https://localhost:7292/api/products')
       .then(response => response.json())
       .then(data => setProducts(data))
   }, [])

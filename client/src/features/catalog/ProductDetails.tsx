@@ -1,9 +1,9 @@
-import { Button, Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Product } from "../../app/models/product";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function ProductDetails() {
     const {id} = useParams<{id: string}>();
@@ -11,7 +11,7 @@ export default function ProductDetails() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`https://localhost:7292/products/${id}`)
+        axios.get(`https://localhost:7292/api/products/${id}`)
         .then(response => setProduct(response.data))
         .catch(error => console.log(error))
         .finally(() => setLoading(false));
@@ -48,12 +48,20 @@ export default function ProductDetails() {
                                         minWidth: 340,
                                         pl: 4,
                                         }}>
-                    <Typography gutterBottom variant="h4" >
-                        {product.price.toFixed(0)} ₽
-                    </Typography>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
+                    <Box display='inline-flex' >
+                        <Box display='flex' >
+                            <Typography gutterBottom variant="h4"  >
+                                {product.price.toFixed(0)} ₽
+                            </Typography>
+                        </Box>
+                        <Box display='flex' ml={16}>
+                            <IconButton aria-label="add to favorites" >
+                                <FavoriteBorderIcon />
+                            </IconButton>
+                        </Box>
+                        
+                    </Box>
+                    
                     <Button size="large" variant='contained' color='primary' sx={{
                                                                                 minWidth: 280,
                                                                                 }}>
