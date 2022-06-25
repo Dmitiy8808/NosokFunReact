@@ -8,7 +8,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ByggyController : ControllerBase
+    public class BuggyController : ControllerBase
     {
         [HttpGet("not-found")]
         public ActionResult GetNotFound()
