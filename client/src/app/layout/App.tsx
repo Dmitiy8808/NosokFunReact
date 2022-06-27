@@ -9,13 +9,22 @@ import Sets from "../../features/sets/Sets";
 import Short from "../../features/short/Short";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import ServerError from "../errors/ServerError";
 
 function App() {
 
   
   return (
     <>
-      <ToastContainer position='bottom-right' hideProgressBar/>
+      <ToastContainer position="bottom-right"
+                      autoClose={5000}
+                      hideProgressBar={true}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover/>
       <CssBaseline />
       <Header />
       <Container>
@@ -27,6 +36,7 @@ function App() {
           <Route path='short/:id' element={<ProductDetails />} />
           <Route path='sets' element={<Sets />} />
           <Route path='sets/:id' element={<ProductDetails />} />
+          <Route path='server-error' element={<ServerError   />} />
           {/* <Route path='*' element={<NotfoundPage />}/>  Добавить роутинг для нот файунд  */}
         </Routes>
       </Container>
