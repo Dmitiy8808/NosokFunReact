@@ -10,6 +10,7 @@ import Short from "../../features/short/Short";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ServerError from "../errors/ServerError";
+import NotFound from "../errors/NotFound";
 
 function App() {
 
@@ -31,13 +32,13 @@ function App() {
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='catalog' element={<Catalog   />} />
-          <Route path='catalog/:id' element={<ProductDetails />}/>
+          <Route path='catalog/:id' element={<ProductDetails  />}/>
           <Route path='short' element={<Short />} />
-          <Route path='short/:id' element={<ProductDetails />} />
+          <Route path='short/:id' element={<ProductDetails />} />  {/* Кажется товаришь из Португалии обяснял в лекции про роутинги как этого избежать */}
           <Route path='sets' element={<Sets />} />
           <Route path='sets/:id' element={<ProductDetails />} />
           <Route path='server-error' element={<ServerError   />} />
-          {/* <Route path='*' element={<NotfoundPage />}/>  Добавить роутинг для нот файунд  */}
+          <Route  path='*' element={<NotFound  />} />
         </Routes>
       </Container>
       

@@ -1,17 +1,16 @@
-import axios, {  AxiosResponse } from "axios";
+import axios, {  AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 
-
-
-
+const sleep = () => new Promise(resolve => setTimeout(resolve, 500));
 
 axios.defaults.baseURL = 'https://localhost:7292/api/';
 
 const responseBody = (response: AxiosResponse) => response.data;
 
 
-axios.interceptors.response.use(response => {
+axios.interceptors.response.use(async response => {
+    await sleep();  // Убрать перед продом
     return response
 }, (error) => {   // В туториале здкст указывается тип но с типом происходит ошибка AxiosError
     const {data, status} = error.response;
@@ -35,6 +34,9 @@ axios.interceptors.response.use(response => {
         case 500:
            history.push({
             pathname:"/server-error"
+           },
+           {
+            state: {error:data}
            });
             break;
         default:
@@ -43,6 +45,7 @@ axios.interceptors.response.use(response => {
     
     return Promise.reject(error.response);
 })
+
 
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),

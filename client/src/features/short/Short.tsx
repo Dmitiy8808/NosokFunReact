@@ -3,7 +3,8 @@ import { Container } from "@mui/system";
 import { useState } from "react";
 import agent from "../../app/api/agent";
 
-export default function AboutPage() {
+
+export default function ShortPage() {
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     function  getValidationError() {
