@@ -1,17 +1,21 @@
 import { Box, Button, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Product } from "../../app/models/product";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFound";
 import LoadingComponent from "../../app/layout/LoadingComponent";
+import { useStoreContext } from "../../app/context/StoreContext";
 
 
 export default function ProductDetails() {
+    const {basket, setBasket} = useStoreContext();
     const {id} = useParams<{id: string}>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
+    const item = basket?.items.find(i => i.productId === product?.id);
 
     useEffect(() => {
         agent.Catalog.details(parseInt(id!))
@@ -22,6 +26,13 @@ export default function ProductDetails() {
              console.log('Вызван useEffect'); // Проблема даойного рендеринга решается отключением React.StrictMode
              
     }, [id])
+
+    function handleAddItem(productId: number)
+    {
+      agent.Basket.addItem(productId)
+        .then(basket => setBasket(basket))
+        .catch(error => console.log(error)); //в блоке finally сделать pop up товар добавлен в корзину. 
+    }
 
     if (loading) return <LoadingComponent message='Loading product...'/>
 
@@ -67,12 +78,12 @@ export default function ProductDetails() {
                         </Box>
                         
                     </Box>
-                    
-                    <Button size="large" variant='contained' color='primary' sx={{
-                                                                                minWidth: 280,
-                                                                                }}>
+                    {item ? 
+                    <Button component={Link} to='/basket' size="large" variant="outlined" color='primary' sx={{minWidth: 280,}}>
+                       Перейти в корзину 
+                    </Button> : <Button onClick={() => handleAddItem(product.id)} size="large" variant='contained' color='primary' sx={{minWidth: 280}}>
                         Добавить в корзину
-                    </Button>
+                    </Button>}
                     <Typography gutterBottom  component="div" sx={{
                                                                  fontSize: 16,
                                                                  mt: 2,
