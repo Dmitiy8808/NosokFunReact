@@ -1,30 +1,22 @@
-import { AddCircleOutlineOutlined, Delete, RemoveCircle, RemoveCircleOutline, RemoveCircleOutlineOutlined } from "@mui/icons-material";
+import { AddCircleOutlineOutlined, Delete, RemoveCircleOutlineOutlined } from "@mui/icons-material";
 import { Box, Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useState } from "react";
 import agent from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { removeBasketItemAsync, setBasket } from "./basketSlice";
 
 export default function BasketPage() {
-    const {basket, setBasket, removeItem} = useStoreContext();
-    const [loading, setLoading] = useState(false); //Убрать тк нигде не используется. 
+    const {basket} = useAppSelector(state => state.basket); // Получем корзину из Redux
+    const dispatch = useAppDispatch();
     const subtotal = basket?.items.reduce((sum, item) => sum + (item.quantity * item.price), 0);
     const totalQantity = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
 
     function handleAddItem(productId: number) {
-      setLoading(true);
       agent.Basket.addItem(productId)
-        .then(basket => setBasket(basket))
-        .catch(error => console.log(error))
-        .finally(() => setLoading(false))
+        .then(basket => dispatch(setBasket(basket)))
+        .catch(error => console.log(error));
     }
 
-    function handleRemoveItem(productId: number, quantity =1) { //необходимо сделать так чтобы нельзя было удалить элемент корзины кнопкой минус 
-      setLoading(true);
-      agent.Basket.removeItem(productId, quantity)
-        .then(() => removeItem(productId, quantity))
-        .catch(error => console.log(error))
-        .finally(() => setLoading(false))
-    }
+  
 
     if (!basket) return <Typography variant='h3'>Your basket is empty</Typography>
     
@@ -58,7 +50,7 @@ export default function BasketPage() {
                     </TableCell>
                     <TableCell align="right">{item.price.toFixed(0)} ₽</TableCell>
                     <TableCell align="center">
-                      <IconButton  disabled={item.quantity === 1} onClick={() => handleRemoveItem(item.productId)}>
+                      <IconButton  disabled={item.quantity === 1} onClick={() => dispatch(removeBasketItemAsync({productId: item.productId}))}>
                         <RemoveCircleOutlineOutlined fontSize='large' style={{transform: 'scale(1.2)'}}/>
                       </IconButton>
                       {item.quantity}
@@ -68,7 +60,7 @@ export default function BasketPage() {
                     </TableCell>
                     <TableCell align="right">{(item.price * item.quantity).toFixed(0)} ₽</TableCell>
                     <TableCell align="right">
-                      <IconButton onClick={() => handleRemoveItem(item.productId, item.quantity)} color='error'>
+                      <IconButton onClick={() => dispatch(removeBasketItemAsync({productId: item.productId}))} color='error'>
                         <Delete />
                       </IconButton>
                     </TableCell>

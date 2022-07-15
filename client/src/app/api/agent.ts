@@ -1,5 +1,4 @@
-import axios, {  AxiosError, AxiosResponse } from "axios";
-import { request } from "http";
+import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 
@@ -12,7 +11,7 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 
 axios.interceptors.response.use(async response => {
-    await sleep();  // Убрать перед продом
+     await sleep();  // Убрать перед продом
     return response
 }, (error) => {   // В туториале здкст указывается тип но с типом происходит ошибка AxiosError
     const {data, status} = error.response;

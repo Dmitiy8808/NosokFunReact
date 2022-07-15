@@ -6,19 +6,20 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFound";
 import LoadingComponent from "../../app/layout/LoadingComponent";
-import { useStoreContext } from "../../app/context/StoreContext";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { addBasketItemAsync, setBasket } from "../basket/basketSlice";
 
 
 export default function ProductDetails() {
-    const {basket, setBasket} = useStoreContext();
+    const {basket} = useAppSelector(state => state.basket); 
+    const dispatch = useAppDispatch();
     const {id} = useParams<{id: string}>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
-    const [submitting, setSubmitting] = useState(false);
     const item = basket?.items.find(i => i.productId === product?.id);
 
     useEffect(() => {
-        agent.Catalog.details(parseInt(id!))
+        agent.Catalog.details(parseInt(id!))       //Видимо эту часть тоже можно заменить на асинхронный вызов из редакса
              .then(response => setProduct(response))
              .catch(error => console.log(error))
              .finally(() => setLoading(false));
@@ -29,9 +30,8 @@ export default function ProductDetails() {
 
     function handleAddItem(productId: number)
     {
-      agent.Basket.addItem(productId)
-        .then(basket => setBasket(basket))
-        .catch(error => console.log(error)); //в блоке finally сделать pop up товар добавлен в корзину. 
+       dispatch(addBasketItemAsync({productId}))
+       //в блоке finally сделать pop up товар добавлен в корзину. 
     }
 
     if (loading) return <LoadingComponent message='Loading product...'/>
