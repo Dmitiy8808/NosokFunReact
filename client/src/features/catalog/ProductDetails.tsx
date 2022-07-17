@@ -1,32 +1,25 @@
 import { Box, Button, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Product } from "../../app/models/product";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import agent from "../../app/api/agent";
 import NotFound from "../../app/errors/NotFound";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addBasketItemAsync, setBasket } from "../basket/basketSlice";
+import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 
 export default function ProductDetails() {
-    const {basket} = useAppSelector(state => state.basket); 
+    const {basket, status} = useAppSelector(state => state.basket); 
     const dispatch = useAppDispatch();
     const {id} = useParams<{id: string}>();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState(true);
+    const product = useAppSelector(state => productSelectors.selectById(state, id!)); // возможно уязвимое место id!
+    const {status: productStatus} = useAppSelector(state =>state.catalog);
     const item = basket?.items.find(i => i.productId === product?.id);
 
     useEffect(() => {
-        agent.Catalog.details(parseInt(id!))       //Видимо эту часть тоже можно заменить на асинхронный вызов из редакса
-             .then(response => setProduct(response))
-             .catch(error => console.log(error))
-             .finally(() => setLoading(false));
-
-             console.log('Вызван useEffect'); // Проблема даойного рендеринга решается отключением React.StrictMode
-             
-    }, [id])
+        if(!product) dispatch(fetchProductAsync(parseInt(id!))) 
+    }, [id, dispatch, product])
 
     function handleAddItem(productId: number)
     {
@@ -34,7 +27,7 @@ export default function ProductDetails() {
        //в блоке finally сделать pop up товар добавлен в корзину. 
     }
 
-    if (loading) return <LoadingComponent message='Loading product...'/>
+    if (productStatus.includes('pending')) return <LoadingComponent message='Loading product...'/>
 
     if (!product) return <NotFound />
 

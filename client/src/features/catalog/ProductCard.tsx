@@ -1,5 +1,6 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { Product } from "../../app/models/product";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { addBasketItemAsync } from "../basket/basketSlice";
@@ -39,6 +40,8 @@ export default function ProductCard({product}: Props) {
           loading={status.includes('pendingAddItem' + product.id)} 
           onClick={() => dispatch(addBasketItemAsync({productId: product.id}))} 
           size="small">В корзину</LoadingButton>
+          <LoadingButton 
+          component={Link} to={`/catalog/${product.id}`}>Подробнее</LoadingButton>
       </CardActions>
       <CardContent>
         <Typography variant="body2" color="text.secondary">

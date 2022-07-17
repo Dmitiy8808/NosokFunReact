@@ -9,9 +9,12 @@ import { Provider } from 'react-redux';
 import { store } from './app/store/configureStore';
 
 
+
 console.log(store.getState());
 
 export const history = createBrowserHistory({ window })
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

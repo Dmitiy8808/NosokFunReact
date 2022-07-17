@@ -1,8 +1,7 @@
 import { AddCircleOutlineOutlined, Delete, RemoveCircleOutlineOutlined } from "@mui/icons-material";
 import { Box, Button, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import agent from "../../app/api/agent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { removeBasketItemAsync, setBasket } from "./basketSlice";
+import { addBasketItemAsync, removeBasketItemAsync} from "./basketSlice";
 
 export default function BasketPage() {
     const {basket} = useAppSelector(state => state.basket); // Получем корзину из Redux
@@ -10,11 +9,7 @@ export default function BasketPage() {
     const subtotal = basket?.items.reduce((sum, item) => sum + (item.quantity * item.price), 0);
     const totalQantity = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
 
-    function handleAddItem(productId: number) {
-      agent.Basket.addItem(productId)
-        .then(basket => dispatch(setBasket(basket)))
-        .catch(error => console.log(error));
-    }
+    
 
   
 
@@ -50,17 +45,17 @@ export default function BasketPage() {
                     </TableCell>
                     <TableCell align="right">{item.price.toFixed(0)} ₽</TableCell>
                     <TableCell align="center">
-                      <IconButton  disabled={item.quantity === 1} onClick={() => dispatch(removeBasketItemAsync({productId: item.productId}))}>
+                      <IconButton  disabled={item.quantity === 1} onClick={() => dispatch(removeBasketItemAsync({productId: item.productId, quantity: 1}))}>
                         <RemoveCircleOutlineOutlined fontSize='large' style={{transform: 'scale(1.2)'}}/>
                       </IconButton>
                       {item.quantity}
-                      <IconButton onClick={() => handleAddItem(item.productId)}>
+                      <IconButton onClick={() => dispatch(addBasketItemAsync({productId: item.productId}))}>
                         <AddCircleOutlineOutlined fontSize='large' style={{transform: 'scale(1.2)'}}/>
                       </IconButton>
                     </TableCell>
                     <TableCell align="right">{(item.price * item.quantity).toFixed(0)} ₽</TableCell>
                     <TableCell align="right">
-                      <IconButton onClick={() => dispatch(removeBasketItemAsync({productId: item.productId}))} color='error'>
+                      <IconButton onClick={() => dispatch(removeBasketItemAsync({productId: item.productId, quantity: item.quantity}))} color='error'>
                         <Delete />
                       </IconButton>
                     </TableCell>
