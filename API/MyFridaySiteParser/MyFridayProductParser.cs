@@ -65,7 +65,6 @@ namespace API.MyFridaySiteParser
             var product = new Product {
                 Name = name.Trim(),
                 Article = article.Trim(),
-                Size = size.Trim(),
                 Description = description,
                 Pattern = pattern,
                 Text = text,
