@@ -1,4 +1,5 @@
 using API.Entitities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,14 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<List<Product>>> GetProducts(string? orderBy, string? searchTerm)
         {  
-            return  Ok(await _productsRepo.GetProducts().ToListAsync());
+            var query = _productsRepo.GetProducts()
+                        .Sort(orderBy)
+                        .Search(searchTerm);
+
+            return await query.ToListAsync();
+
         }
 
         [HttpGet]

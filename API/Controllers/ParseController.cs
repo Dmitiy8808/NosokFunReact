@@ -8,24 +8,24 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class ParseController : ControllerBase
     {
-        private readonly IParsingService _parsingSeervice;
+        private readonly IParsingService _parsingService;
 
-        public ParseController(IParsingService parsingSeervice)
+        public ParseController(IParsingService parsingService)
         {
-            _parsingSeervice = parsingSeervice;
+            _parsingService = parsingService;
         }
 
         [HttpGet]
         public async Task<string[]> GetHtmlLoader()
         {  
-            return await _parsingSeervice.GetSocksHrefs();
+            return await _parsingService.GetSocksHrefs();
         }
 
         [HttpGet]
         [Route("product")]
         public async Task<List<Product>> Getproduct()
         {  
-            return await _parsingSeervice.GetParseProduct();
+            return await _parsingService.GetParseProduct();
         }
     }
 }

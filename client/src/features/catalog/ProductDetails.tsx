@@ -47,6 +47,45 @@ export default function ProductDetails() {
                     <div>
                     Размер: {product.size}
                     </div>
+                    <Box
+                        sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        p: 1,
+                        m: 1,
+                        bgcolor: 'background.paper',
+                        borderRadius: 1,
+                        }}
+                    >
+                        <Box sx={{
+                            bgcolor: 'background.paper',
+                            boxShadow: 1,
+                            borderRadius: 2,
+                            p: 1,
+                            minWidth: 30,
+                            m:1,
+                            }}>34-37
+                        </Box>
+                        <Box sx={{
+                            bgcolor: 'background.paper',
+                            boxShadow: 1,
+                            borderRadius: 2,
+                            p: 1,
+                            minWidth: 30,
+                            m:1,
+                            }}>34-37
+                        </Box>
+                        <Box sx={{
+                            bgcolor: 'background.paper',
+                            boxShadow: 1,
+                            borderRadius: 2,
+                            p: 1,
+                            minWidth: 30,
+                            m:1,
+                            }}>34-37
+                        </Box>
+                    </Box>
+
                     
                 </Grid>
                 <Grid item xs={3}>
