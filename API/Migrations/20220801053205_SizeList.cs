@@ -1,12 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
-    public partial class EnumAnnotations : Migration
+    public partial class SizeList : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,7 +31,7 @@ namespace API.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Article = table.Column<string>(type: "text", nullable: false),
-                    Size = table.Column<int[]>(type: "integer[]", nullable: false),
+                    Size = table.Column<List<string>>(type: "text[]", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Pattern = table.Column<string>(type: "text", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: false),

@@ -9,6 +9,7 @@ import { addBasketItemAsync, setBasket } from "../basket/basketSlice";
 import { fetchProductAsync, productSelectors } from "./catalogSlice";
 
 
+
 export default function ProductDetails() {
     const {basket, status} = useAppSelector(state => state.basket); 
     const dispatch = useAppDispatch();
@@ -16,6 +17,37 @@ export default function ProductDetails() {
     const product = useAppSelector(state => productSelectors.selectById(state, id!)); // возможно уязвимое место id!
     const {status: productStatus} = useAppSelector(state =>state.catalog);
     const item = basket?.items.find(i => i.productId === product?.id);
+
+    function ListItem(props: any) {  //нужно уйти от типа any
+        return <Box sx={{
+            bgcolor: 'background.paper',
+            boxShadow: 1,
+            borderRadius: 2,
+            p: 1,
+            minWidth: 30,
+            m:1,
+            }}>{props.value}
+        </Box>;
+      }
+      
+      function SizeList(props: any) {
+        const numbers = props.numbers;
+        return (
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            p: 1,
+            m: 1,
+            bgcolor: 'background.paper',
+            borderRadius: 1,
+            }}>
+            {numbers.map((number: any) =>
+              <ListItem key={number.toString()}
+                        value={number} />
+            )}
+          </Box>
+        );
+      }
 
     useEffect(() => {
         if(!product) dispatch(fetchProductAsync(parseInt(id!))) 
@@ -26,6 +58,8 @@ export default function ProductDetails() {
        dispatch(addBasketItemAsync({productId}))
        //в блоке finally сделать pop up товар добавлен в корзину. 
     }
+
+   
 
     if (productStatus.includes('pending')) return <LoadingComponent message='Loading product...'/>
 
@@ -47,46 +81,8 @@ export default function ProductDetails() {
                     <div>
                     Размер: {product.size}
                     </div>
-                    <Box
-                        sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        p: 1,
-                        m: 1,
-                        bgcolor: 'background.paper',
-                        borderRadius: 1,
-                        }}
-                    >
-                        <Box sx={{
-                            bgcolor: 'background.paper',
-                            boxShadow: 1,
-                            borderRadius: 2,
-                            p: 1,
-                            minWidth: 30,
-                            m:1,
-                            }}>34-37
-                        </Box>
-                        <Box sx={{
-                            bgcolor: 'background.paper',
-                            boxShadow: 1,
-                            borderRadius: 2,
-                            p: 1,
-                            minWidth: 30,
-                            m:1,
-                            }}>34-37
-                        </Box>
-                        <Box sx={{
-                            bgcolor: 'background.paper',
-                            boxShadow: 1,
-                            borderRadius: 2,
-                            p: 1,
-                            minWidth: 30,
-                            m:1,
-                            }}>34-37
-                        </Box>
-                    </Box>
-
-                    
+                    <SizeList numbers={product.size} />
+                   
                 </Grid>
                 <Grid item xs={3}>
                     <Paper elevation={10} sx={{

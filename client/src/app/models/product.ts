@@ -2,7 +2,7 @@ export interface Product {
     id: number;
     name: string;
     article: string;
-    size: string;
+    size: string [];
     description: string;
     pattern: string;
     text: string;
